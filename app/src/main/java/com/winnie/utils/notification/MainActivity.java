@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public void systemNotify(View view) {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         Notification.Builder builder = new Notification.Builder(this)
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         //获取通知管理器对象
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         compatibleVersonO(manager, builder);
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManager manager
                 = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         compatibleVersonO(manager, builder);
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void progressNotify(View view) {
         final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         final Notification.Builder builder = new Notification.Builder(MainActivity.this)
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void progressNotify1(View view) {
         final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this)
@@ -184,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
         contentViews.setTextViewText(R.id.tv_notify_content, "进度0%");
 
         Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 MainActivity.this, 0, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setContent(contentViews);
         builder.setAutoCancel(true);
         final NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         compatibleVersonO(manager, builder);
@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 int incr;
                 for (incr = 0; incr <= 100; incr += 5) {
-                    if(incr < 100) {
+                    if (incr < 100) {
                         contentViews.setTextViewText(R.id.tv_notify_content, String.format("进度%1$s%2$s", incr, "%"));
-                    }else {
+                    } else {
                         contentViews.setTextViewText(R.id.tv_notify_title, "下载完成");
                         contentViews.setTextViewText(R.id.tv_notify_content, "进度100%");
                     }
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
     public void soundNotify(View view) {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         Notification.Builder builder = null;
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             manager.createNotificationChannel(channel);
             Notification notification = builder.build();
             manager.notify(6, notification);
-        }else {
+        } else {
             builder = new Notification.Builder(this)
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle("系统通知")
@@ -258,37 +258,46 @@ public class MainActivity extends AppCompatActivity {
     public void soundNotify1(View view) {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
-        Notification.Builder builder = null;
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String sChannelId = "0x02";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            builder = new Notification.Builder(this, getPackageName())
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setContentTitle("8.0系统通知")
-                    .setContentText("这是8.0系统通知，你惊讶吗？");
-            NotificationChannel channel = new NotificationChannel(getPackageName(),
-                    "TAG", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setSound( Uri.parse("file:///sdcard/notification/ringer.mp3"), null);
-            manager.createNotificationChannel(channel);
-            Notification notification = builder.build();
-            manager.notify(7, notification);
-        }else {
-            builder = new Notification.Builder(this)
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setContentTitle("系统通知")
-                    .setContentText("这是系统通知，你惊讶吗？");
-            Notification notification = builder.build();
-//            notification.defaults |= Notification.DEFAULT_SOUND;
-            notification.sound = Uri.parse("file:///sdcard/notification/ringer.mp3");
-            manager.notify(7, notification);
+            NotificationChannel channel = new NotificationChannel(sChannelId,
+                    "TAG", NotificationManager.IMPORTANCE_HIGH);
+            //是否在桌面icon右上角展示小红点
+            channel.enableLights(false);
+            //是否在久按桌面图标时显示此渠道的通知
+            channel.setShowBadge(false);
+            channel.enableVibration(true);
+            channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM), Notification.AUDIO_ATTRIBUTES_DEFAULT);
+            channel.setVibrationPattern(new long[]{0, 300, 300, 300});
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(channel);
         }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, sChannelId);
+        builder.setContentTitle(getResources().getString(R.string.app_name));
+        builder.setContentText("系统通知");
+        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.ic_notification);
+
+        Intent resultIntent = new Intent(this, Main2Activity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+
+        Notification notification = builder.build();
+        notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        notification.vibrate = new long[]{0, 300, 300, 300};
+        assert notificationManager != null;
+        notificationManager.notify(1, notification);
     }
 
     public void vibrateNotify(View view) {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         Notification.Builder builder = null;
@@ -300,18 +309,18 @@ public class MainActivity extends AppCompatActivity {
             NotificationChannel channel = new NotificationChannel(getPackageName(),
                     "TAG", NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableVibration(true);
-            channel.setVibrationPattern(new long[]{0,100,200,300});
+            channel.setVibrationPattern(new long[]{0, 100, 200, 300});
             manager.createNotificationChannel(channel);
             Notification notification = builder.build();
             manager.notify(8, notification);
-        }else {
+        } else {
             builder = new Notification.Builder(this)
                     .setSmallIcon(R.drawable.ic_notification)
                     .setContentTitle("系统通知")
                     .setContentText("这是系统通知，你惊讶吗？");
             Notification notification = builder.build();
 //            notification.defaults |= Notification.DEFAULT_VIBRATE;
-            notification.vibrate = new long[]{0,100,200,300};
+            notification.vibrate = new long[]{0, 100, 200, 300};
             manager.notify(8, notification);
         }
     }
@@ -319,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     public void lightNotify(View view) {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(manager == null){
+        if (manager == null) {
             return;
         }
         Notification.Builder builder = new Notification.Builder(this)
@@ -339,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 8.0以上的兼容操作
+     *
      * @param manager
      * @param builder
      */
