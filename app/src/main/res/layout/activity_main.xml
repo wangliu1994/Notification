@@ -18,6 +18,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btn_system_notify1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="systemNotify1"
+        android:text="系统通知1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_system_notify" />
+
+    <Button
+        android:id="@+id/btn_system_notify2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="systemNotify2"
+        android:text="系统通知2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_system_notify1" />
+
+    <Button
         android:id="@+id/btn_progress_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +45,17 @@
         android:text="进度条通知"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_system_notify" />
+        app:layout_constraintTop_toBottomOf="@id/btn_system_notify2" />
+
+    <Button
+        android:id="@+id/btn_progress_notify1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="progressNotify1"
+        android:text="进度条通知1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_progress_notify" />
 
     <Button
         android:id="@+id/btn_custom_notify"
@@ -35,6 +65,46 @@
         android:text="自定义通知"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_progress_notify" />
+        app:layout_constraintTop_toBottomOf="@id/btn_progress_notify1" />
+
+    <Button
+        android:id="@+id/btn_sound_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="soundNotify"
+        android:text="系统铃声通知"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_custom_notify" />
+
+    <Button
+        android:id="@+id/btn_sound_notify1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="soundNotify1"
+        android:text="自定义铃声通知"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_sound_notify" />
+
+    <Button
+        android:id="@+id/btn_vibrate_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="vibrateNotify"
+        android:text="震动通知"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_sound_notify1" />
+
+    <Button
+        android:id="@+id/btn_light_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="lightNotify"
+        android:text="闪光通知"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_vibrate_notify" />
 
 </android.support.constraint.ConstraintLayout>
