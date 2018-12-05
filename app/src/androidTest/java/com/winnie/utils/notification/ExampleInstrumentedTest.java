@@ -1,4 +1,4 @@
-package com.winnie.utils.notifycation;
+package com.winnie.utils.notification;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

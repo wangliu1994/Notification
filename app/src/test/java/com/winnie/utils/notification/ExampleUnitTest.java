@@ -1,4 +1,4 @@
-package com.winnie.utils.notifycation;
+package com.winnie.utils.notification;
 
 import org.junit.Test;
 

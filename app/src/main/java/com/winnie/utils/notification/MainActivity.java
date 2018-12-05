@@ -1,4 +1,4 @@
-package com.winnie.utils.notifycation;
+package com.winnie.utils.notification;
 
 import android.app.Notification;
 import android.support.v7.app.AppCompatActivity;
